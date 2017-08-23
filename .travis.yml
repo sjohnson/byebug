@@ -8,6 +8,10 @@ cache:
   directories:
     - vendor/bundle
 
+env:
+  global:
+     - CC_TEST_REPORTER_ID=787a2f89b15c637323c7340d65ec17e898ac44480706b4b4122ea040c2a88f1d
+
 language: ruby
 
 before_install:
@@ -23,12 +27,15 @@ install:
     fi
 
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+
   - git config --local user.email 'travis@travis.ci'
   - git config --local user.name 'Travis CI'
 
 script:
   - script/ci.sh
-  - bundle exec codeclimate-test-reporter || test true
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 rvm:
   - 2.2.7
@@ -58,7 +65,3 @@ notifications:
   email:
     on_success: change
     on_failure: change
-
-addons:
-  code_climate:
-    repo_token: 02530029b1e956220f05076c590b84b9ab078362c9083312eb2ad41cab138408
