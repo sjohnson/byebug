@@ -65,4 +65,9 @@ before_script:
 script:
   - ./cc-test-reporter before-build
   - script/ci.sh
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter format-coverage --output coverage/codeclimate.$TRAVIS_RUBY_VERSION.json
+
+jobs:
+  include:
+    - stage: coverage
+      script: ./cc-test-reporter sum-coverage coverage/codeclimate.*.json | ./cc-test-reporter upload-coverage
