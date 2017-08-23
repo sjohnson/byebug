@@ -8,11 +8,40 @@ cache:
   directories:
     - vendor/bundle
 
+language: ruby
+
+rvm:
+  - 2.2.7
+  - 2.2.7-clang
+  - 2.3.4
+  - 2.3.4-clang
+  - 2.4.1
+  - 2.4.1-clang
+  - ruby-head
+  - ruby-head-clang
+
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: ruby-head-clang
+
 env:
   global:
-     - CC_TEST_REPORTER_ID=787a2f89b15c637323c7340d65ec17e898ac44480706b4b4122ea040c2a88f1d
+    - CC_TEST_REPORTER_ID=787a2f89b15c637323c7340d65ec17e898ac44480706b4b4122ea040c2a88f1d
 
-language: ruby
+  matrix:
+    - "LIBEDIT=true"
+    - "LIBEDIT=false"
+
+branches:
+  only:
+    - master
+    - chore/update_codeclimate_test_reporter
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
 
 before_install:
   - sudo apt-get install indent shellcheck
@@ -34,35 +63,6 @@ before_script:
   - git config --local user.name 'Travis CI'
 
 script:
+  - ./cc-test-reporter before-build
   - script/ci.sh
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
-rvm:
-  - 2.2.7
-  - 2.2.7-clang
-  - 2.3.4
-  - 2.3.4-clang
-  - 2.4.1
-  - 2.4.1-clang
-  - ruby-head
-  - ruby-head-clang
-
-matrix:
-  allow_failures:
-    - rvm: ruby-head
-    - rvm: ruby-head-clang
-
-env:
-  matrix:
-    - "LIBEDIT=true"
-    - "LIBEDIT=false"
-
-branches:
-  only:
-    - master
-    - chore/update_codeclimate_test_reporter
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
