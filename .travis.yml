@@ -60,6 +60,7 @@ env:
 branches:
   only:
     - master
+    - chore/update_codeclimate_test_reporter
 
 notifications:
   email:
