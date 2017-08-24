@@ -47,8 +47,6 @@ environment:
   codeclimate_repo_token: '02530029b1e956220f05076c590b84b9ab078362c9083312eb2ad41cab138408'
 
 matrix:
-  fast_finish: true
-
   allow_failures:
     - ruby_version: _trunk
 
