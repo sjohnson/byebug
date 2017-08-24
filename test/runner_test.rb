@@ -95,6 +95,10 @@ module Byebug
       with_command_line('bin/byebug', '--', example_path, '-opt', 'value') do
         non_stop_runner.run
 
+        if RUBY_VERSION.include?("2.2")
+          assert_equal 1, 2
+        end
+
         assert_equal ['-opt', 'value'], $ARGV
       end
     end
