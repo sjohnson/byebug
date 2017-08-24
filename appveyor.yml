@@ -55,6 +55,7 @@ matrix:
 branches:
   only:
     - master
+    - appveyor_experiments
 
 notifications:
   - provider: Email
